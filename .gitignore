@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.bak
+err.txt
+out.txt
+.tmp_*
+.DS_Store

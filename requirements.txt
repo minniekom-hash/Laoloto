@@ -1,0 +1,2 @@
+# ไม่มี dependency ภายนอก — ใช้เฉพาะ Python standard library
+# ไฟล์นี้มีไว้ให้ Render มี build step ที่ถูกต้อง

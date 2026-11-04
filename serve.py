@@ -16,8 +16,8 @@ import urllib.parse
 
 import update
 
-HOST = '127.0.0.1'
-PORT = 8931
+HOST = os.environ.get('HOST', '0.0.0.0' if 'PORT' in os.environ else '127.0.0.1')
+PORT = int(os.environ.get('PORT', '8931'))
 CACHE_TTL = 45          # วินาที: กันยิง Sanook ถี่เกินไป
 BASE = os.path.dirname(os.path.abspath(__file__))
 
