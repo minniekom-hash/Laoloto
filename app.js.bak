@@ -1,0 +1,40 @@
+const D=window.LAO_DATA.map(([d,n])=>({d,n,top:+n.slice(2),bot:+n.slice(0,2)}));
+const p2=x=>String(x).padStart(2,'0');
+function norm(a){const m=Math.max(...a),mn=Math.min(...a);return a.map(v=>(v-mn)/((m-mn)||1))}
+// สูตรใหม่: เน้นช่วงห่าง (gap) + เลขฮอตช่วงสั้น 20 งวดล่าสุด
+function scoreFn(H){
+ const N=H.length,tops=H.map(h=>h.top),bots=H.map(h=>h.bot);
+ const w=[0.25,0.30,0.20,0.15,0.10],decay=0.95;
+ const F=new Array(100).fill(0),G=new Array(100).fill(0),M1=new Array(100).fill(0),M2=new Array(100).fill(0),Ht=new Array(100).fill(0),last=new Array(100).fill(-1);
+ const dc=new Array(10).fill(1);
+ for(let i=0;i<N;i++){F[tops[i]]+=Math.pow(decay,N-1-i);F[bots[i]]+=Math.pow(decay,N-1-i);last[tops[i]]=i;last[bots[i]]=i;dc[Math.floor(tops[i]/10)]++;dc[tops[i]%10]++;dc[Math.floor(bots[i]/10)]++;dc[bots[i]%10]++;}
+ for(let v=0;v<100;v++)G[v]=Math.min(N-1-last[v],300)/3000;
+ const lt=tops[N-1],lb=bots[N-1];
+ for(let i=0;i<N-1;i++){if(tops[i]===lt)M1[tops[i+1]]++;if(bots[i]===lb)M1[bots[i+1]]++;}
+ if(N>=3){const a=tops[N-2],b=tops[N-1];for(let i=0;i<N-2;i++)if(tops[i]===a&&tops[i+1]===b)M2[tops[i+2]]++;const c=bots[N-2],e=bots[N-1];for(let i=0;i<N-2;i++)if(bots[i]===c&&bots[i+1]===e)M2[bots[i+2]]++;}
+ const recent=[...tops,...bots].slice(Math.max(0,[...tops,...bots].length-20));
+ for(const v of recent)Ht[v]++;
+ const P=[norm(F),norm(G),norm(M1),norm(M2),norm(Ht)],S=new Array(100).fill(0);
+ for(let v=0;v<100;v++)for(let j=0;j<5;j++)S[v]+=w[j]*P[j][v];
+ return S;
+}
+function predict(H){
+ const sc=scoreFn(H),order=[...Array(100).keys()].sort((a,b)=>sc[b]-sc[a]),chosen=[];
+ for(const v of order){if(chosen.length>=50)break;chosen.push(p2(v));}
+ return chosen;
+}
+function nextDraw(d){const x=new Date(d+'T12:00:00');do{x.setDate(x.getDate()+1)}while(x.getDay()==0||x.getDay()==6);return x.toISOString().slice(0,10)}
+const L=D[D.length-1];
+ld.textContent=L.d;l4.textContent=L.n;lt.textContent=p2(L.top);lb.textContent=p2(L.bot);nd.textContent=nextDraw(L.d);
+sets.innerHTML=predict(D).map(s=>`<div class="n50">${s}</div>`).join('');
+let rows=[],hit=0,ht=0,hb=0;
+D.forEach((x,i)=>{if(i<30)return;const s=predict(D.slice(0,i));const a=s.includes(String(x.top).padStart(2,'0')),b=s.includes(String(x.bot).padStart(2,'0'));if(a||b)hit++;if(a)ht++;if(b)hb++;
+ rows.push(`<tr><td>${x.d}<td>${s.join(' ')}<td class="${a?'g':''}">${String(x.top).padStart(2,'0')}<td class="${b?'g':''}">${String(x.bot).padStart(2,'0')}<td class="${a||b?'g':'r'}">${a||b?'ถูก':'ไม่ถูก'}</tr>`)});const n=rows.length;
+st.innerHTML=`<div>ทายทั้งหมด<b>${n}</b>งวด</div><div>ถูก<b class="g">${hit}</b>งวด</div><div>ไม่ถูก<b class="r">${n-hit}</b>งวด</div><div>อัตราถูก<b>${(hit/n*100).toFixed(2)}%</b></div><div>ถูกบน<b class="g">${ht}</b>งวด (${(ht/n*100).toFixed(2)}%)</div><div>ถูกล่าง<b class="g">${hb}</b>งวด (${(hb/n*100).toFixed(2)}%)</div>`;
+tb.innerHTML=rows.reverse().join('');
+const TH_D=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+const TH_M=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const z=n=>String(n).padStart(2,'0');
+function nextDrawTs(){const b=new Date(Date.now()+7*36e5);let y=b.getUTCFullYear(),m=b.getUTCMonth(),dd=b.getUTCDate();for(let i=0;i<10;i++){const dt=new Date(Date.UTC(y,m,dd+i,20,30)-7*36e5),w=new Date(Date.UTC(y,m,dd+i)).getUTCDay();if(w>0&&w<6&&dt.getTime()>Date.now())return{ts:dt.getTime(),dow:w,day:new Date(Date.UTC(y,m,dd+i))};}}
+function tick(){const b=new Date(Date.now()+7*36e5);now.textContent=`วัน${TH_D[b.getUTCDay()]}ที่ ${b.getUTCDate()} ${TH_M[b.getUTCMonth()]} ${b.getUTCFullYear()+543} เวลา ${z(b.getUTCHours())}:${z(b.getUTCMinutes())}:${z(b.getUTCSeconds())} น.`;const n=nextDrawTs(),g=n.day;nx.textContent=`วัน${TH_D[n.dow]}ที่ ${g.getUTCDate()} ${TH_M[g.getUTCMonth()]} ${g.getUTCFullYear()+543} เวลา 20:30 น.`;nd.textContent=`${g.getUTCDate()} ${TH_M[g.getUTCMonth()]} ${g.getUTCFullYear()+543} เวลา 20:30 น.`;let s=Math.floor((n.ts-Date.now())/1000);const dd=Math.floor(s/86400);s%=86400;cd.textContent=`เหลืออีก ${dd?dd+' วัน ':''}${z(Math.floor(s/3600))}:${z(Math.floor(s%3600/60))}:${z(s%60)}`;}
+tick();setInterval(tick,1000);

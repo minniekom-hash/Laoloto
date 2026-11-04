@@ -1,0 +1,320 @@
+﻿<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ใบ้หวยลาว — ชุดเดียว 47 ตัว ตรวจทั้งบน-ล่าง (Walk-forward)</title>
+<style>
+  :root{
+    --bg:#0b1220; --card:#151f33; --card2:#0e1728; --line:#28364f;
+    --txt:#e6edf7; --dim:#93a4bd; --gold:#fbbf24; --cyan:#38bdf8;
+    --green:#4ade80; --red:#f87171;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#1b2b47 0%,var(--bg) 60%);
+       color:var(--txt);font-family:Tahoma,"Segoe UI",sans-serif;line-height:1.55}
+  .w{max-width:1040px;margin:auto;padding:18px 16px 48px}
+  h1{text-align:center;margin:6px 0 2px;font-size:clamp(20px,4vw,30px);color:var(--gold)}
+  .sub{text-align:center;color:var(--dim);font-size:13px;margin-bottom:4px}
+  .meta{text-align:center;color:var(--dim);font-size:12px;margin-bottom:16px}
+  .card{background:linear-gradient(180deg,#17233a,#131d30);border:1px solid var(--line);
+        border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 10px 30px #0006}
+  .card h3{margin:0 0 12px;font-size:16px;color:#cfe0f5;font-weight:600}
+  .card h3 span{color:var(--gold)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.two{grid-template-columns:1fr}}
+  .center{text-align:center}
+  .clock{font-size:24px;color:var(--cyan);font-weight:bold}
+  .next{font-size:18px;color:var(--gold);font-weight:bold;margin-top:10px}
+  .count{font-size:30px;font-weight:bold;margin-top:6px;letter-spacing:.5px}
+  .last{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+  .last div{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 22px;text-align:center}
+  .last small{color:var(--dim);font-size:12px}
+  .last b{display:block;font-size:32px;color:var(--cyan);line-height:1.2}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .chip{display:inline-flex;align-items:baseline;gap:5px;background:#1d2c45;border:1px solid #31456a;
+        border-radius:999px;padding:3px 10px;font-size:13px;color:var(--gold);font-weight:bold}
+  .chip i{font-style:normal;color:var(--dim);font-size:10px}
+  .chip em{font-style:normal;color:var(--cyan);font-size:10px;font-weight:normal}
+  .sets{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
+  .n50{background:#0a1322;border:1px solid #22314a;border-radius:7px;text-align:center;
+       padding:7px 0;font-size:15px;color:#c7d6ea;font-variant-numeric:tabular-nums}
+  .n50.hi{background:#2a2210;border-color:#7a5a12;color:var(--gold);font-weight:bold}
+  .rankgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:6px}
+  .rankcell{background:#0a1322;border:1px solid #22314a;border-radius:7px;padding:5px 9px;
+            font-size:13px;color:#c7d6ea;display:flex;align-items:baseline;gap:7px;
+            font-variant-numeric:tabular-nums}
+  .rankcell b{color:var(--dim);font-size:11px;min-width:22px;text-align:right}
+  .rankcell span{margin-left:auto;color:var(--cyan);font-size:11px}
+  .rankcell.top{background:#2a2210;border-color:#7a5a12;color:var(--gold);font-weight:bold}
+  .rankcell.top b{color:var(--gold)}
+  .wrow{display:grid;grid-template-columns:210px 1fr 62px;gap:10px;align-items:center;margin:6px 0;font-size:13px}
+  .wl{color:#c7d6ea}
+  .wbar{background:#0a1322;border-radius:6px;height:12px;overflow:hidden;border:1px solid #22314a}
+  .wbar span{display:block;height:100%;background:linear-gradient(90deg,#22d3ee,#fbbf24)}
+  .wv{text-align:right;color:var(--gold);font-variant-numeric:tabular-nums}
+  .n{font-size:12px;color:var(--dim);line-height:1.7}
+  .chips2{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .chips2>div{background:var(--card2);border:1px solid var(--line);border-radius:12px;
+              padding:8px 14px;text-align:center;min-width:118px}
+  .chips2 small{display:block;color:var(--dim);font-size:11px}
+  .chips2 b{font-size:20px}
+  .scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+  th,td{padding:7px 6px;border-bottom:1px solid #22314a;text-align:center;white-space:nowrap}
+  th{color:var(--dim);font-size:12px;font-weight:600}
+  tbody tr:hover{background:#1a2740}
+  td.picks{text-align:left;color:#9fb3cd;font-size:11.5px;white-space:normal;min-width:240px}
+  .g{color:var(--green)}.r{color:var(--red)}
+  .note{border-left:3px solid var(--gold);background:#1a2136;padding:10px 14px;border-radius:0 10px 10px 0;
+        margin-top:12px}
+  .foot{color:var(--dim);font-size:12px;line-height:1.8}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--dim);margin-top:10px}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+  .modes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+  .mode{cursor:pointer;background:#0f192b;border:1px solid #2b3a55;border-radius:12px;
+        padding:8px 14px;color:var(--txt);font-family:inherit;text-align:center;min-width:96px}
+  .mode:hover{border-color:#3c557c}
+  .mode.on{background:#2a2210;border-color:#7a5a12;box-shadow:0 0 0 1px #7a5a12 inset}
+  .mode b{display:block;font-size:14px;color:var(--gold)}
+  .mode span{display:block;font-size:11px;color:var(--dim)}
+  .mode em{display:block;font-style:normal;font-size:11px;color:var(--cyan)}
+  .btn{cursor:pointer;background:#16233a;border:1px solid #2b3a55;border-radius:9px;
+       padding:8px 14px;color:var(--txt);font-family:inherit;font-size:13px;margin-top:6px}
+  .btn:hover{background:#1b2b46;border-color:#3c557c}
+</style>
+</head>
+<body>
+<div class="w">
+
+  <h1>ใบ้หวยลาว — ชุดเดียว 47 ตัว (เลือก 30–90 ได้)</h1>
+  <div class="sub">ชุดเดียวตรวจทั้งบนและล่าง · เลือกขนาดชุดให้ได้ % ตามที่ต้องการ · โมเดลผสม 6 ผู้เชี่ยวชาญ + Hedge</div>
+  <div class="meta" id="meta"></div>
+  <div class="note" id="verdictTop"></div>
+
+  <div class="two">
+    <div class="card center">
+      <h3>เวลาไทย / งวดถัดไป</h3>
+      <div class="clock" id="now"></div>
+      <div class="next" id="nx"></div>
+      <div class="count" id="cd"></div>
+    </div>
+    <div class="card center">
+      <h3>งวดล่าสุด <span id="ld"></span></h3>
+      <div class="last">
+        <div><small>รางวัลที่ 1</small><b id="l4"></b></div>
+        <div><small>บน 2 ตัว</small><b id="lt"></b></div>
+        <div><small>ล่าง 2 ตัว</small><b id="lb"></b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>ความน่าเชื่อถือของข้อมูล — ผลจริงจาก Sanook 100% (ไม่มีการจำลอง)</h3>
+    <div class="chips2" id="prov"></div>
+    <div class="n" id="provnote"></div>
+  </div>
+
+  <div class="card">
+    <h3>สูตรสุดท้าย — คัดเลือกจากการทดสอบ 690 การตั้งค่า (รอบล่าสุด) + ชุดก่อนหน้า</h3>
+    <div class="chips2" id="finalCfg"></div>
+    <div class="n" id="finalNote" style="margin-top:8px"></div>
+    <div class="n" id="searchLog" style="margin-top:10px;padding-top:10px;border-top:1px solid #1c2a41"></div>
+  </div>
+
+  <div class="card">
+    <h3>ใบ้งวดถัดไป: <span id="nd"></span> (ออกผล 20:30 น.) — <span id="pickTitle">ชุดเดียว 47 ตัว</span></h3>
+    <div class="modes" id="modes"></div>
+    <div class="n" id="pickInfo" style="margin:6px 0 12px"></div>
+    <div class="chips" id="topList"></div>
+    <div class="sets" id="sets"></div>
+    <div class="legend">
+      <span><i class="dot" style="background:#2a2210;border:1px solid #7a5a12"></i>10 อันดับคะแนนสูงสุด</span>
+      <span><i class="dot" style="background:#0a1322;border:1px solid #22314a"></i>อันดับถัดไป</span>
+      <span>ตัวเลขในชิป = ความน่าจะเป็นที่โมเดลให้ (%)</span>
+    </div>
+    <div class="note n" style="margin-top:14px">
+      <b>ทำไม % สูงขึ้นเมื่อเลือกมากขึ้น:</b> แต่ละรางวัลสุ่มจาก 100 ตัว (00–99) ชุด k ตัวจึงมีโอกาสถูก
+      1−(1−k/100)² เมื่อตรวจทั้งสองรางวัล · 30 ตัว = 51.00% · 35 ตัว = 57.75% · 40 ตัว = 64.00% · 47 ตัว = 71.91% · 50 ตัว = 75.00% · 60 ตัว = 84.00% · 70 ตัว = 91.00% ·
+      80 ตัว = 96.00% · 90 ตัว = 99.00%<br>
+      <b>ข้อควรรู้:</b> % ที่สูงขึ้นมาจาก “การครอบคลุมเลขมากขึ้น” ไม่ใช่ความแม่นยำของสูตร
+      และไม่ได้รับประกันกำไร เพราะต้นทุนเพิ่มตามจำนวนตัว — ใช้เป็นการจัดชุดตามงบ/สไตล์ที่ต้องการ<br>
+      <b>★ 47 ตัว</b> คือชุดที่ขอ (ทฤษฎี 71.91%) — ถูกข้างเดียวได้กำไร +30 บาท (ทุน 470) แต่โอกาสถูกน้อยกว่า 50 ตัว<br>
+      ชุดเล็กลงถูกน้อยลงแต่กำไรต่อครั้งสูงขึ้น: <b>30 ตัว</b> ทฤษฎี 51.00% (ทุน 300 · ถูกข้างเดียว +200) ·
+      <b>35 ตัว</b> ทฤษฎี 57.75% (ทุน 350 · +150) — ผลวัดจริงอัปเดตทุกงวดในการ์ดสถิติด้านล่าง
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>สูตรทดลองจากรอบค้นหาล่าสุด (ผู้ท้าชิง) — ยังไม่แนะนำให้ใช้จริง</h3>
+    <div class="chips2" id="expCfg"></div>
+    <div class="n" id="expNote" style="margin-top:8px"></div>
+    <div class="sets" id="expSets" style="margin-top:10px"></div>
+    <div class="n" id="expOverlap" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card">
+    <h3>ทดสอบด้วยเงินจริง — ซื้อชุดละ 5 บาท ทั้งบนและล่าง</h3>
+    <div class="n" id="moneySetup" style="margin-bottom:10px"></div>
+    <div class="chips2" id="money"></div>
+    <div class="n" id="moneyNote" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card">
+    <h3>อัปเดตผลอัตโนมัติ (หลัง 20:30 น.)</h3>
+    <div class="n" id="autoUpdate">กำลังตรวจ…</div>
+    <button id="refreshBtn" class="btn">ตรวจผลใหม่เดี๋ยวนี้</button>
+    <div class="n" style="margin-top:8px;color:#7f93ad">
+      เปิดหน้านี้ผ่าน <code>python serve.py</code> แล้วเข้า <code>http://127.0.0.1:8931/</code> ·
+      ระบบจะตรวจ Sanook เองทุก 60 วินาทีหลัง 20:30 และโหลดหน้าใหม่ทันทีที่พบผลงวดใหม่
+      (ถ้าเปิดด้วยการดับเบิลคลิกไฟล์ จะอัปเดตอัตโนมัติไม่ได้)
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>เลขที่ออกบ่อย (ความถี่จริงจากข้อมูล) + คะแนนโมเดล</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th>#<th>เลข<th>100 งวดล่าสุด<th>50 งวดล่าสุด<th>ทั้งหมด<th>ห่างจากงวดล่าสุด<th>คะแนนโมเดล
+        </tr></thead>
+        <tbody id="hot"></tbody>
+      </table>
+    </div>
+    <div class="n" style="margin-top:8px">
+      “ออกบ่อย” ในที่นี้คือความถี่จริง (นับทั้งบนและล่าง) แต่ระวัง: การทดสอบ χ² ด้านล่างพบว่า
+      ความถี่ทุกเลขสอดคล้องกับการสุ่มล้วน — เลขที่ออกบ่อยจึงยัง <b>ไม่ได้</b> มีโอกาสออกงวดหน้ามากขึ้นจริง
+      ตารางนี้ใช้ประกอบการดูเท่านั้น ไม่ใช่หลักประกัน
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>น้ำหนักภายในโมเดล (บน/ล่างคำนวณแยกกัน แล้วนำคะแนนมารวมเป็นชุดเดียว)</h3>
+    <div id="wlist"></div>
+  </div>
+
+  <div class="card">
+    <h3>ผลทดสอบย้อนหลัง (ผลจริงทั้งหมด + out-of-sample)</h3>
+    <div class="n" style="color:#cfe0f5;margin-bottom:8px"><b id="statAllLabel">ทั้งหมด (walk-forward ทุกงวด) — ที่ระดับ 47 ตัว</b></div>
+    <div class="chips2" id="statsAll"></div>
+    <div class="n" style="color:#cfe0f5;margin:12px 0 8px"><b id="statOOSLabel">Out-of-sample (งวดที่ไม่เคยใช้จูนสูตร) — ที่ระดับ 47 ตัว</b></div>
+    <div class="chips2" id="statsOOS"></div>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th>เลือกกี่ตัว<th>ถูกบน (อัตรา)<th>ถูกล่าง (อัตรา)<th>ถูกอย่างน้อย 1 รางวัล<th>Lift รวม<th>z รวม
+        </tr></thead>
+        <tbody id="ktab"></tbody>
+      </table>
+    </div>
+    <div class="n" style="margin-top:10px">
+      เลือก k ตัวจาก 100 → สุ่มถูก k% ต่อรางวัล และถูกอย่างน้อยหนึ่งรางวัล 1−(1−k/100)² ·
+      z ≥ 1.645 คือ “ดีกว่าสุ่มอย่างมีนัยสำคัญที่ 5%” · สังเกตว่า % สูงขึ้นตาม k เสมอ
+      (30 ตัว ≈ 51%, 35 ตัว ≈ 58%, 47 ตัว ≈ 72%) — นั่นคือการครอบคลุมมากขึ้น ไม่ใช่สูตรเก่งขึ้น
+    </div>
+    <div class="note n" id="ctrl">…</div>
+  </div>
+
+  <div class="card">
+    <h3>จูนสูตรให้ “อัตราชนะสูงสุด” — และบทเรียน overfitting (การทดลองย่อย ไม่ใช่สูตรที่ใช้จริง)</h3>
+    <div class="n" style="margin-bottom:10px">
+      ทดลองหลายสูตร (half-life × learning rate × หน้าต่างสั้น + สูตรสุดท้าย) โดยเลือกจาก 70% แรก (train)
+      แล้ววัดผลกับอีก 30% ที่ไม่เคยเห็น (test) — วิธีนี้เท่านั้นที่บอกได้ว่าจูนแล้ว “เก่งจริง” หรือแค่ฟิตอดีต
+    </div>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th style="text-align:left">สูตร<td>อัตราชนะ train<td>อัตราชนะ test<td>ต่าง
+        </tr></thead>
+        <tbody id="demo"></tbody>
+      </table>
+    </div>
+    <div class="note n" id="demotext"></div>
+    <div class="n" style="margin-top:8px" id="randband"></div>
+    <div class="n" style="margin-top:6px" id="leak"></div>
+  </div>
+
+  <div class="card">
+    <h3>เสถียรภาพรายปี (ชุดเดียว 47 ตัว)</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>ปี<th>จำนวนงวด<th>ถูกบน<th>ถูกล่าง<th>ถูกอย่างน้อย 1</tr></thead>
+        <tbody id="ytab"></tbody>
+      </table>
+    </div>
+    <div class="n" style="margin-top:8px">
+      ถ้าเก่งจริง ตัวเลขควรสูงกว่าค่าสุ่ม (47% / 47% / 71.91%) สม่ำเสมอทุกปี ไม่ใช่สูงปีเดียวแล้วต่ำปีอื่น
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>60 งวดล่าสุด: ทายก่อนออกผลจริง</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th>วันที่<th id="recentPicks">ใบ้ 47 ตัว (12 ตัวแรก)<th>ผลบน (ลำดับในชุด)<th>ผลล่าง (ลำดับในชุด)<th>ผล
+        </tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>
+    <div class="n" style="margin-top:8px">
+      “ลำดับ” คือตำแหน่งของเลขที่ออกในชุดที่ใบ้ (1 = โมเดลให้โอกาสสูงสุด) · ถ้าไม่ถูกจะแสดง “นอกชุด #N”
+      โดย N คืออันดับในคะแนนโมเดลจากทั้งหมด 100 ตัว
+    </div>
+    <div class="n" id="hitPos" style="margin-top:8px"></div>
+  </div>
+
+  <div class="card">
+    <h3>ครึ่งบน (1–50) vs ครึ่งล่าง (51–100) — และอันดับโอกาสชนะทั้ง 100 ตัว</h3>
+    <div class="chips2" id="bandStats"></div>
+    <div class="n" id="bandNote"></div>
+    <h3 style="margin-top:18px">จัดอันดับโอกาสชนะ 1–100 (คะแนนรวมบน+ล่าง)</h3>
+    <div class="rankgrid" id="rankAll" style="margin-top:8px"></div>
+    <div class="n" id="rankNote" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card">
+    <h3>ทดสอบความเป็นสุ่มของข้อมูล (Randomness tests)</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>การทดสอบ<th>สถิติ<th>องศาอิสระ<th>p-value<th>ผล</tr></thead>
+        <tbody id="dt"></tbody>
+      </table>
+    </div>
+    <div class="note n" id="dverdict"></div>
+    <div class="n" style="margin-top:8px">
+      ถ้าข้อมูลเป็นสุ่มล้วน p-value ควรกระจัดกระจายและมากกว่า 0.05 เป็นส่วนใหญ่
+      การทดสอบนี้บอกว่า “มีสัญญาณให้ขุดหรือไม่” ก่อนที่เราจะไปเชื่อผลทดสอบย้อนหลัง
+    </div>
+  </div>
+
+  <div class="card foot">
+    <h3>วิธีคิดและความโปร่งใส</h3>
+    <p style="margin:0 0 8px">
+      <b>1) ชุดเดียวตรวจสองรางวัล:</b> รวมคะแนนความน่าจะเป็นของ “บน” และ “ล่าง” แล้วจัดอันดับ
+      47 ตัวแรกของคะแนนรวม ใช้ชุดเดียวตรวจทั้งสองรางวัล<br>
+      <b>2) 6 ผู้เชี่ยวชาญ:</b> ความถี่ถ่วงเวลา (half-life), ความถี่ล่าสุด, ช่วงห่างคงค้าง (hazard
+      ที่ประมาณจากข้อมูลจริง ไม่ใช่ความเชื่อ “เลขค้างต้องออก”), Markov ลำดับ 1–2, โครงสร้างหลัก/หน่วย
+      และ expert “สุ่มล้วน” กันโมเดลแย่กว่าสุ่ม<br>
+      <b>3) รวมแบบเรียนรู้:</b> Hedge ปรับน้ำหนักทุกงวดจากผลจริง (ใช้เฉพาะอดีต) จึงเป็นสูตรที่ปรับตัวเองได้<br>
+      <b>4) จูนและวัดผลแบบไม่โกง:</b> ทดสอบ 500+ การตั้งค่า แล้ววัดกับช่วง out-of-sample
+      พร้อมตรวจ data leakage ด้วยการรันซ้ำแบบตัดอนาคต<br>
+      <b>5) ตรวจสอบ:</b> binomial z / p-value, การทดสอบความเป็นสุ่มของข้อมูล
+      และ shuffle control 40 รอบ
+    </p>
+    <div class="note">
+      <b>ข้อความตรงไปตรงมา:</b> หวยคือเหตุการณ์สุ่ม ไม่มีสูตรใดรับประกันผลหรือให้ความแม่นยำสูงได้จริง
+      ชุด 47 ตัวจาก 100 มีโอกาสถูกแต่ละรางวัล 47% และถูกอย่างน้อยหนึ่งรางวัล 71.91% ตามทฤษฎี
+      ตัวเลขที่เห็นคือผลทดสอบย้อนหลังซึ่งอาจดีขึ้นหรือแย่ลงจากความบังเอิญ
+      ใช้เพื่อความบันเทิงและการวิเคราะห์สถิติเท่านั้น ไม่ใช่ข้อมูลลงทุนหรือชวนเล่นการพนัน
+    </div>
+  </div>
+
+</div>
+<script src="data.js"></script>
+<script src="verify.js"></script>
+<script src="model.js"></script>
+<script src="app.js"></script>
+<script src="autoupdate.js"></script>
+</body>
+</html>
