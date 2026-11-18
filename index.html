@@ -149,16 +149,17 @@
   </div>
 
   <div class="card">
-    <h3>โหมดแยกบน/ล่าง: 10 ตัวบน + 10 ตัวล่าง (ทุน 20 บาท/งวด)</h3>
+    <h3>โหมดแยกบน/ล่าง: <span id="splitTitle">50 + 50</span> (ทุน <span id="splitCost">100</span> บาท/งวด)</h3>
+    <div class="modes" id="splitModes"></div>
     <div class="n" id="splitInfo"></div>
     <div class="split2" style="margin-top:10px">
       <div>
-        <div class="n" style="margin-bottom:6px"><b class="g">บน 10 ตัว</b> — จัดอันดับจากโมเดลบนโดยตรง</div>
-        <div class="sets" id="top10"></div>
+        <div class="n" style="margin-bottom:6px"><b class="g">บน <span class="splitK">50</span> ตัว</b> — จัดอันดับจากโมเดลบนโดยตรง</div>
+        <div class="sets" id="topK"></div>
       </div>
       <div>
-        <div class="n" style="margin-bottom:6px"><b style="color:#67e8f9">ล่าง 10 ตัว</b> — จัดอันดับจากโมเดลล่างโดยตรง</div>
-        <div class="sets" id="bot10"></div>
+        <div class="n" style="margin-bottom:6px"><b style="color:#67e8f9">ล่าง <span class="splitK">50</span> ตัว</b> — จัดอันดับจากโมเดลล่างโดยตรง</div>
+        <div class="sets" id="botK"></div>
       </div>
     </div>
     <div class="chips2" id="splitMoney" style="margin-top:12px"></div>
