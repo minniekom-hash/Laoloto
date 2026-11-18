@@ -270,6 +270,7 @@
 
     const oTop = M.rankOrder(rTop.next.p).slice(0, k);
     const oBot = M.rankOrder(rBot.next.p).slice(0, k);
+    const ov = oTop.filter(function (v) { return oBot.indexOf(v) >= 0; }).length;
     $('topK').innerHTML = oTop.map(function (v, i) {
       return '<div class="n50 hi" title="อันดับ ' + (i + 1) + ' · p=' +
         (rTop.next.p[v] * 100).toFixed(3) + '%">' + p2(v) + '</div>';
@@ -283,7 +284,9 @@
       nf(cost) + ' บาท/งวด</b> · ถูกข้างเดียวได้ <b>100 บาท</b> (' + netText(oneNet) + ') · ' +
       'ถูกทั้งคู่ได้ <b>200 บาท</b> (' + netText(bothNet) + ') · ไม่ถูกเลย −' + nf(cost) + ' บาท<br>' +
       'ชุดบนและล่าง<b>แยกอันดับกัน</b> เพราะโมเดลบน/ล่างเป็นคนละตัว — ' +
-      'ไม่นำคะแนนมาเฉลี่ย 50:50 แบบชุดเดียว 47 ตัว';
+      'ไม่นำคะแนนมาเฉลี่ย 50:50 แบบชุดเดียว 47 ตัว<br>' +
+      'เลขที่ปรากฏทั้งสองชุด <b>' + ov + ' ตัว</b> (แทงคนละรางวัล ไม่ได้ตัดออก) → ' +
+      'จำนวนเลขไม่ซ้ำจริง <b>' + (2 * k - ov) + ' ตัว</b> จากทั้งหมด ' + (2 * k) + ' เบท';
 
     $('splitMoney').innerHTML = [
       chip('ถูกบน', hT + ' ครั้ง (' + pct(hT / n) + ')', hT / n > k / 100 ? 'g' : 'r'),
