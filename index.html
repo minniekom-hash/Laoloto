@@ -40,6 +40,9 @@
   .n50{background:#0a1322;border:1px solid #22314a;border-radius:7px;text-align:center;
        padding:7px 0;font-size:15px;color:#c7d6ea;font-variant-numeric:tabular-nums}
   .n50.hi{background:#2a2210;border-color:#7a5a12;color:var(--gold);font-weight:bold}
+  .n50.bot{background:#0d2027;border-color:#155e6b;color:#a5f3fc;font-weight:bold}
+  .split2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:620px){.split2{grid-template-columns:1fr}}
   .rankgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:6px}
   .rankcell{background:#0a1322;border:1px solid #22314a;border-radius:7px;padding:5px 9px;
             font-size:13px;color:#c7d6ea;display:flex;align-items:baseline;gap:7px;
@@ -143,6 +146,23 @@
       ชุดเล็กลงถูกน้อยลงแต่กำไรต่อครั้งสูงขึ้น: <b>30 ตัว</b> ทฤษฎี 51.00% (ทุน 300 · ถูกข้างเดียว +200) ·
       <b>35 ตัว</b> ทฤษฎี 57.75% (ทุน 350 · +150) — ผลวัดจริงอัปเดตทุกงวดในการ์ดสถิติด้านล่าง
     </div>
+  </div>
+
+  <div class="card">
+    <h3>โหมดแยกบน/ล่าง: 10 ตัวบน + 10 ตัวล่าง (ทุน 20 บาท/งวด)</h3>
+    <div class="n" id="splitInfo"></div>
+    <div class="split2" style="margin-top:10px">
+      <div>
+        <div class="n" style="margin-bottom:6px"><b class="g">บน 10 ตัว</b> — จัดอันดับจากโมเดลบนโดยตรง</div>
+        <div class="sets" id="top10"></div>
+      </div>
+      <div>
+        <div class="n" style="margin-bottom:6px"><b style="color:#67e8f9">ล่าง 10 ตัว</b> — จัดอันดับจากโมเดลล่างโดยตรง</div>
+        <div class="sets" id="bot10"></div>
+      </div>
+    </div>
+    <div class="chips2" id="splitMoney" style="margin-top:12px"></div>
+    <div class="n" id="splitNote" style="margin-top:8px"></div>
   </div>
 
   <div class="card">

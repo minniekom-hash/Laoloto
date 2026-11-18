@@ -44,6 +44,26 @@
   const KSEL = [30, 35, 40, 47, 50, 60, 70, 80, 90];
   let CHOSEN = 47;
 
+  /* --------- โหมด 10+10: จัดอันดับแยกบน/ล่าง (ไม่เฉลี่ย 50:50) ---------- */
+  function sideRank(prob, x) {
+    const px = prob[x];
+    let r = 0;
+    for (let v = 0; v < M.N; v++) {
+      if (prob[v] > px || (prob[v] === px && v < x)) r++;
+    }
+    return r;
+  }
+  const J10 = (function () {
+    const out = [], m = Math.min(rTop.rows.length, rBot.rows.length);
+    for (let i = 0; i < m; i++) {
+      const ra = rTop.rows[i], rb = rBot.rows[i];
+      if (!ra.prob || !rb.prob || ra.i !== rb.i) continue;
+      const rT = sideRank(ra.prob, ra.x), rB = sideRank(rb.prob, rb.x);
+      out.push({ i: ra.i, hitT: rT < 10, hitB: rB < 10 });
+    }
+    return out;
+  })();
+
   const hitAt = {};
   KSEL.forEach(function (k) {
     hitAt[k] = {
@@ -199,6 +219,77 @@
       'ผลรวมในอดีต ' + (pnl >= 0 ? 'กำไร +' : 'ขาดทุน ') + nf(Math.abs(pnl)) +
       ' บาท เป็นความผันผวน ไม่ใช่ edge ที่ยั่งยืน ' +
       '(ถ้าร้านจ่ายต่ำกว่า 100 เท่า EV จะติดลบทันที)';
+  }
+
+  /* ---------- การ์ด 10+10: ชุดบน/ล่างแยกกัน + เงินทุน 20 บาท ---------- */
+  function renderSplit10() {
+    const K10 = 10, PRICE = 1, PAY = 100, cost = K10 * 2 * PRICE;
+    const n = J10.length;
+    let hT = 0, hB = 0, both = 0, pnl = 0, peak = 0, dd = 0, streak = 0, maxStreak = 0;
+    J10.forEach(function (r) {
+      if (r.hitT) hT++;
+      if (r.hitB) hB++;
+      if (r.hitT && r.hitB) both++;
+      const d = PAY * ((r.hitT ? 1 : 0) + (r.hitB ? 1 : 0)) - cost;
+      pnl += d;
+      if (pnl > peak) peak = pnl;
+      if (peak - pnl > dd) dd = peak - pnl;
+      if (!r.hitT && !r.hitB) { streak++; if (streak > maxStreak) maxStreak = streak; }
+      else streak = 0;
+    });
+    const one = hT + hB - 2 * both, either = hT + hB - both, none = n - either;
+    const oo = J10.filter(function (r) { return r.i >= SPLIT; });
+    const oT = oo.filter(function (r) { return r.hitT; }).length;
+    const oB = oo.filter(function (r) { return r.hitB; }).length;
+    const staked = cost * n, returned = PAY * (hT + hB), roi = pnl / staked * 100;
+    const nf = function (x) { return Math.round(x).toLocaleString('en-US'); };
+    const money = function (x) {
+      return x > 0 ? '+' + nf(x) : (x === 0 ? '0' : '−' + nf(-x));
+    };
+
+    const oTop = M.rankOrder(rTop.next.p).slice(0, K10);
+    const oBot = M.rankOrder(rBot.next.p).slice(0, K10);
+    $('top10').innerHTML = oTop.map(function (v, i) {
+      return '<div class="n50 hi" title="อันดับ ' + (i + 1) + ' · p=' +
+        (rTop.next.p[v] * 100).toFixed(3) + '%">' + p2(v) + '</div>';
+    }).join('');
+    $('bot10').innerHTML = oBot.map(function (v, i) {
+      return '<div class="n50 bot" title="อันดับ ' + (i + 1) + ' · p=' +
+        (rBot.next.p[v] * 100).toFixed(3) + '%">' + p2(v) + '</div>';
+    }).join('');
+
+    $('splitInfo').innerHTML = 'ซื้อ <b>10 ตัวบน + 10 ตัวล่าง</b> ตัวละ <b>1 บาท</b> = <b>' +
+      nf(cost) + ' บาท/งวด</b> · ถูกข้างเดียวได้ <b>100 บาท</b> (กำไร +80) · ' +
+      'ถูกทั้งคู่ได้ <b>200 บาท</b> (กำไร +180) · ไม่ถูกเลย −20 บาท<br>' +
+      'ชุดบนและล่าง<b>แยกอันดับกัน</b> เพราะโมเดลบน/ล่างเป็นคนละตัว — ' +
+      'ไม่นำคะแนนมาเฉลี่ย 50:50 แบบชุดเดียว 47 ตัว';
+
+    $('splitMoney').innerHTML = [
+      chip('ถูกบน', hT + ' ครั้ง (' + pct(hT / n) + ')', hT / n > 0.1 ? 'g' : 'r'),
+      chip('ถูกล่าง', hB + ' ครั้ง (' + pct(hB / n) + ')', hB / n > 0.1 ? 'g' : 'r'),
+      chip('ถูกทั้งคู่', both + ' ครั้ง (' + pct(both / n) + ')'),
+      chip('ถูกอย่างน้อย 1 ข้าง', either + ' ครั้ง (' + pct(either / n) + ')'),
+      chip('กำไร/ขาดทุน', money(pnl) + ' ฿', pnl >= 0 ? 'g' : 'r'),
+      chip('ROI', (roi >= 0 ? '+' : '') + roi.toFixed(2) + '%', roi >= 0 ? 'g' : 'r'),
+      chip('Drawdown สูงสุด', nf(dd) + ' ฿', 'r'),
+      chip('แพ้ติดกันสูงสุด', maxStreak + ' งวด'),
+      chip('OOS บน / ล่าง', pct(oT / oo.length) + ' / ' + pct(oB / oo.length))
+    ].join('');
+
+    $('splitNote').innerHTML =
+      'ทดสอบย้อนหลัง ' + n + ' งวด (walk-forward): ต้นทุน ' + nf(staked) + ' ฿ · ได้คืน ' +
+      nf(returned) + ' ฿ → <b class="' + (pnl >= 0 ? 'g' : 'r') + '">' + money(pnl) + ' ฿</b><br>' +
+      '<b>จุดคุ้มทุน:</b> แต่ละข้างลง 10 บาท จ่าย 100 เท่า → ต้องถูกอย่างน้อย <b>10% ต่อข้าง</b> ' +
+      'ถึงจะเท่าทุน · ที่วัดได้บน ' + pct(hT / n) + ' และล่าง ' + pct(hB / n) + ' → ' +
+      'ค่าคาดหวัง ≈ <b>' + (100 * (hT + hB) / n - cost).toFixed(1) + ' บาท/งวด</b> ' +
+      '(แทบเป็นศูนย์/ติดลบเล็กน้อย)<br>' +
+      'ค้นหา 600 การตั้งค่าเพื่อเพิ่มอัตราถูกของชุด 10 ตัวโดยเฉพาะ: train ดีขึ้นถึง 11.30% (บน) / ' +
+      '11.45% (ล่าง) แต่พอเลือกแบบ nested walk-forward ได้ <b>9.30% / 8.81%</b> เทียบสูตรปัจจุบัน ' +
+      '<b>10.28% / 8.56%</b> → <b class="r">ไม่มีสูตรที่ generalize ได้ดีกว่า</b> ' +
+      'จึงคงสูตรเดิมและใช้การแยกอันดับบน/ล่างเป็นหลัก<br>' +
+      '<b>ทำกำไรได้จริงไหม:</b> ที่ 100 เท่าเป็น “ราคายุติธรรม” (fair odds) ค่าคาดหวัง = 0 พอดี ' +
+      'จะกำไรได้ต้องได้เปรียบ เช่น ร้านจ่าย <b>110–120 เท่า</b> ขึ้นไป หรือมี signal จริงในข้อมูล ' +
+      '(ผลทดสอบ randomness ยังไม่พบ) · ตัวเลข +/− ที่เห็นในอดีตคือความผันผวน ไม่ใช่ edge';
   }
 
   function renderPicks() {
@@ -625,6 +716,7 @@
   /* ------------------------- shuffle control test ----------------------- */
   renderModes();
   renderPicks();
+  renderSplit10();
 
   /* ------------- สูตรทดลอง (ผู้ท้าชิง) — แสดงเทียบ ไม่ได้ใช้จริง ---------- */
   (function renderExp() {
